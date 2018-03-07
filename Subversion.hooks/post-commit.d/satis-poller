@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e #-x
+
+_hook_up() # $hook $project
+{
+  curl --silent --fail "$( printf "$1" "$2" )"
+}
+
+test -f "$HOME/.satis-projects" || exit 0
+
+while IFS=: read -r _root _prefix _scheme _hook; do
+  if ! [ "$_root" = "$1" ]; then
+    continue
+  fi
+  if ! [ "${_root%%#*}" ]; then
+    continue
+  fi
+
+  _name="$( svnlook cat "$_root" "/$_prefix/${_scheme:-trunk/composer.json}" | jq -r .name )"
+  test "$_name"
+
+  if [ "$_prefix" ]; then
+    if [ "${_prefix%/*}" = "$_prefix" ]; then
+      _n=1
+    else
+      _n=2
+    fi
+
+    for _sub in $( svnlook changed -r "$2" "$1" | sed -Ee "s/^[^[:space:]]+[[:space:]]+\<//;" | cut -d/ -f -$_n | sort -u ); do
+      if [ "$_sub" = "$_prefix" ]; then
+        _hook_up "$_hook" "$_name"
+        break
+      fi
+    done
+  else
+    _hook_up "$_hook" "$_name"
+  fi
+done < "$HOME/.satis-projects"

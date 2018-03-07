@@ -1,0 +1,2 @@
+# SVNROOT : [ PREFIX [ /SUB ] = '' ] : [ composer.json = trunk/composer.json ] : endpoint
+/path/to/repository:project::http://satis.example.org/satis/webhook.php?update=%s

@@ -1,0 +1,9 @@
+export PATH=/usr/local/bin:/usr/bin:/bin
+export USER="$( id -un )"
+export HOME="$(
+  getent passwd $( id -u ) | {
+    IFS=: read -r _user _ _uid _gid _gecos _home _shell _
+    printf "%s" "$_home"
+  }
+)"
+export SVNROOT="$1"

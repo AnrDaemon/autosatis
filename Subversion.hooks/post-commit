@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+_hookdir="$( readlink -e "$0" ).d"
+test -d "$_hookdir/" || exit
+
+# Setup hooks environment.
+. "$( dirname "$_hookdir" )/environment"
+
+# Pass up to five arguments to the hook scripts.
+# See respective `hooks/*.tmpl` file for specific details.
+run-parts --umask=0027 --exit-on-error --arg="$1" --arg="$2" --arg="$3" --arg="$4" --arg="$5" "$_hookdir/"
