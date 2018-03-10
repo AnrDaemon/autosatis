@@ -4,7 +4,7 @@ set -e #-x
 
 _hook_up() # $hook $project
 {
-  curl --silent --fail "$( printf "$1" "$2" )"
+  curl --silent --fail --data "update=$2" "$1"
 }
 
 test -f "$HOME/.satis-projects" || exit 0
