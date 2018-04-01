@@ -3,7 +3,7 @@
 Some usage notes:
 
 ## Git repository setup
-Since __git__ adhere to "one repository - one project" philosophy, just create `post-commit` hook with `curl` pointing to your webhook script with `...?update=<vendor>/<project>` query parameter.
+Since __git__ adhere to "one repository - one project" philosophy, just create `post-commit` hook with `curl` POST'ing `update=<vendor>/<project>` to your webhook script.
 
 ## Subversion repository hook script
 Script requirements:
